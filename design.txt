@@ -1,0 +1,67 @@
+- scrabble boards
+
+- game items
+  - tiles
+  - board
+
+- game setup
+  - 
+
+- board
+    - show row and col numbers
+* - starting square
+2 - double letter
+3 - triple letter
+@ - double word
+£ - triple word
+
+      1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
+      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+ 1 - [£][ ][ ][2][ ][ ][ ][£][ ][ ][ ][2][ ][ ][£]
+ 2 - [ ][@][ ][ ][ ][3][ ][ ][ ][3][ ][ ][ ][@][ ]
+ 3 - [ ][ ][@][ ][ ][ ][2][ ][2][ ][ ][ ][@][ ][ ]
+ 4 - [2][ ][ ][@][ ][ ][ ][2][ ][ ][ ][@][ ][ ][2]
+ 5 - [ ][ ][ ][ ][@][ ][ ][ ][ ][ ][@][ ][ ][ ][ ]
+ 6 - [ ][3][ ][ ][ ][3][ ][ ][ ][3][ ][ ][ ][3][ ]
+ 7 - [ ][ ][2][ ][ ][ ][2][ ][2][ ][ ][ ][2][ ][ ]
+ 8 - [£][ ][ ][2][ ][ ][ ][*][ ][ ][ ][2][ ][ ][£]
+ 9 - [ ][ ][2][ ][ ][ ][2][ ][2][ ][ ][ ][2][ ][ ]
+10 - [ ][3][ ][ ][ ][3][ ][ ][ ][3][ ][ ][ ][3][ ]
+11 - [ ][ ][ ][ ][@][ ][ ][ ][ ][ ][@][ ][ ][ ][ ]
+12 - [2][ ][ ][@][ ][ ][ ][2][ ][ ][ ][@][ ][ ][2]
+13 - [ ][ ][@][ ][ ][ ][2][ ][2][ ][ ][ ][@][ ][ ]
+14 - [ ][@][ ][ ][ ][3][ ][ ][ ][3][ ][ ][ ][@][ ]
+15 - [£][ ][ ][2][ ][ ][ ][£][ ][ ][ ][2][ ][ ][£]
+
+R  I  O  G  V  F  A
+1  
+
+- player turn
+  - show board
+  - show points
+  - show number of tiles left in bag
+  - show their letters (max 7) -> make it a dict with entries 'A': 1
+  - option to shuffle letter order
+  - enter word
+    - check input
+    - check if word is possible
+    - check if word exists in dictionary 
+  - enter row (if turn = 1, row and col is * tile)
+    - check in range 1-15
+    - check if row full
+  - enter column
+    - check in range 1-15
+    - check tile free
+  - enter horizontal or vertical placement
+    - check word fits
+    - check placement aligns with placed letters
+    - check letters align with already placed letters
+
+  - placement function
+    - for each tile, place letter
+    - cumulative letter score
+    - multiplier variable, increases with special tiles encountered
+    - player score += letter score sum * multiplier
+
+    - remove tiles from player and deal new tiles
+    
