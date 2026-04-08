@@ -43,7 +43,7 @@ R  I  O  G  V  F  A
   - enter word
     - check input
     - check if word is possible
-    - check if word exists in dictionary 
+    - check if word exists in dictionary
   - enter row (if turn = 1, row and col is * tile)
     - check in range 1-15
     - check if row full

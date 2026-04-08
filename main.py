@@ -4,10 +4,35 @@ from prompt_toolkit import prompt
 
 import display
 import game_pieces as gp
+import game_checker as checker
 
 
-with open("words.txt", "r") as f:
-    words = set(word.strip() for word in f)
+display.print_title()
+
+player1_name = input("Enter name of Player 1: ")
+player2_name = input("Enter name of Player 2: ")
+player_names = [player1_name, player2_name]
+num_players = 2  # TODO: dynamic between 2-4 players
+
+# print rules
+
+bag = []
+for i in range(len(gp.letter_tiles)):
+    bag += [gp.letter_tiles[i]] * gp.letters_in_bag[i]
+
+players_tiles = [[], []]
+scores = [0, 0]
+turn = 0
+game_turn = 0
+
+for i in range(7):
+    for player_tiles in players_tiles:
+        player_tile = random.choice(bag)
+        bag.remove(player_tile)
+        player_tiles.append(player_tile)
+
+players_tiles[0] = ['A', 'B', 'C', '$']
+
 
 # menu 1 -> place -> next turn
 # menu 2 -> exchange loop -> next turn
@@ -45,63 +70,7 @@ def exchange_letters_prompt(letters):
         sys.stdout.write("\033[F\033[K")
 
 
-def is_word_valid(word, letters, game_turn):
-    if len(word) == 1 and game_turn > 1:
-        return "Word cannot be placed legally"
-
-    if word.upper() not in words:
-        return "Not a real word"
-
-    letters_left = letters.copy()
-    for letter in word.upper():
-        if letter in letters_left:
-            letters_left.remove(letter)
-        else:
-            return "Word must only use letters in hand"
-
-    return ""
-
-
-def place_word():
-    pass
-
-
-display.print_title()
-
-player1_name = input("Enter name of Player 1: ")
-player2_name = input("Enter name of Player 2: ")
-player_names = [player1_name, player2_name]
-num_players = 2  # TODO: dynamic between 2-4 players
-
-# print rules
-
-bag = []
-for i in range(len(gp.letter_tiles)):
-    bag += [gp.letter_tiles[i]] * gp.letters_in_bag[i]
-
-players_tiles = [[], []]
-scores = [0, 0]
-turn = 0
-game_turn = 0
-
-for i in range(7):
-    for player_tiles in players_tiles:
-        player_tile = random.choice(bag)
-        bag.remove(player_tile)
-        player_tiles.append(player_tile)
-
-# game loop
-while len(bag) > 0:
-    game_turn += 1
-    display.print_player_turn_start(player_names[turn])
-    display.print_board(gp.board)
-    print()
-
-    tile_points = []
-    for tile in players_tiles[turn]:
-        tile_points.append(gp.letter_points[tile])
-    display.print_player_tiles(players_tiles[turn], tile_points)
-
+def menu_handler():
     choice = "3"
     while choice == "3":
         choice = player_menu()
@@ -134,14 +103,64 @@ while len(bag) > 0:
         print("Enter word to place:")
         print()
         word = input("> ")
-        word_valid = is_word_valid(word, players_tiles[turn], game_turn)
+        word_valid = checker.is_word_valid(
+            word, players_tiles[turn], game_turn)
         while word_valid != "":
             sys.stdout.write("\033[F\033[K")
             sys.stdout.write("\033[F\033[K")
             sys.stdout.flush()
             print(word_valid)
             word = input("> ")
-            word_valid = is_word_valid(word, players_tiles[turn], game_turn)
+            word_valid = checker.is_word_valid(
+                word, players_tiles[turn], game_turn)
+
+
+def enter_line():
+    while True:
+        try:
+            line = int(input("> "))
+            if 1 <= line <= 15:
+                return line
+            else:
+                sys.stdout.write("\033[F\033[K")
+                sys.stdout.flush()
+        except:
+            sys.stdout.write("\033[F\033[K")
+            sys.stdout.flush()
+
+
+def place_word():
+    pass
+
+
+# game loop
+while len(bag) > 0:
+    game_turn += 1
+    display.print_player_turn_start(player_names[turn])
+    display.print_board(gp.board)
+    print()
+
+    tile_points = []
+    for tile in players_tiles[turn]:
+        tile_points.append(gp.letter_points[tile])
+    display.print_player_tiles(players_tiles[turn], tile_points)
+
+    # print()
+    # print("Enter row to place on (1-15):")
+    # print()
+    # row = enter_line() - 1
+    # row_valid = is_line_valid(row)
+    # while row_valid != "":
+    #     sys.stdout.write("\033[F\033[K")
+    #     sys.stdout.write("\033[F\033[K")
+    #     sys.stdout.flush()
+    #     print(row_valid)
+    #     row = enter_line() - 1
+    #     row_valid = is_line_valid(row)
+
+    # print()
+    # print("Enter column to place on (1-15):")
+    # column = enter_line() - 1
 
     # prompt to begin next player turn
     # turn = (turn + 1) % num_players
