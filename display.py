@@ -36,10 +36,10 @@ def print_player_tiles(tiles, points):
         print(tile, end="   ")
 
     print()
-    print("              ", end="")
+    print("             ", end="")
     for point in points:
-        print(point, end="  ")
         if point < 10:
             print(" ", end="")
+        print(point, end="  ")
 
     print()
