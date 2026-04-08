@@ -34,13 +34,11 @@
 15 - [£][ ][ ][2][ ][ ][ ][£][ ][ ][ ][2][ ][ ][£]
 
 R  I  O  G  V  F  A
-1  
+1  3 10  2  3  4  5
 
 - player turn
   - show board
-  - show points
-  - show number of tiles left in bag
-  - show their letters (max 7) -> make it a dict with entries 'A': 1
+  - show their letters (max 7)
   - option to shuffle letter order
   - enter word
     - check input
@@ -64,4 +62,7 @@ R  I  O  G  V  F  A
     - player score += letter score sum * multiplier
 
     - remove tiles from player and deal new tiles
-    
+
+  - show all player points
+  - show number of tiles left in bag
+
