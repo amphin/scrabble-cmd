@@ -1,3 +1,5 @@
+from enum import Enum
+
 #       1  2  3  4  5  6  7  8  9  10 11 12 13 14 15
 #       |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 #  1 - [£][ ][ ][2][ ][ ][ ][£][ ][ ][ ][2][ ][ ][£]
@@ -16,7 +18,27 @@
 # 14 - [ ][@][ ][ ][ ][3][ ][ ][ ][3][ ][ ][ ][@][ ]
 # 15 - [£][ ][ ][2][ ][ ][ ][£][ ][ ][ ][2][ ][ ][£]
 
-board = [
+
+class Tile(str, Enum):
+    START = '*'
+    EMPTY = '.'
+    DOUBLE_LETTER = '2'
+    TRIPLE_LETTER = '3'
+    DOUBLE_WORD = '@'
+    TRIPLE_WORD = '£'
+
+    def __str__(self):
+        return self.value
+
+    def __repr_(self):
+        return self.value
+
+
+class Letter(str, Enum):
+    WILD_LETTER = '$'
+
+
+RAW_BOARD = [
     ['£', '.', '.', '2', '.', '.', '.', '£', '.', '.', '.', '2', '.', '.', '£'],
     ['.', '@', '.', '.', '.', '3', '.', '.', '.', '3', '.', '.', '.', '@', '.'],
     ['.', '.', '@', '.', '.', '.', '2', '.', '2', '.', '.', '.', '@', '.', '.'],
@@ -34,8 +56,10 @@ board = [
     ['£', '.', '.', '2', '.', '.', '.', '£', '.', '.', '.', '2', '.', '.', '£']
 ]
 
-letter_points = {
-    '$': 0,
+board = [[Tile(cell) for cell in row] for row in RAW_BOARD]
+
+LETTER_POINTS = {
+    Letter.WILD_LETTER: 0,
     'A': 1, 'B': 3,
     'C': 3, 'D': 2,
     'E': 1, 'F': 4,
@@ -51,7 +75,7 @@ letter_points = {
     'Y': 4, 'Z': 10
 }
 
-letter_tiles = ['$', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+LETTER_TILES = [Letter.WILD_LETTER, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
                 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-letters_in_bag = [2, 9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1,
-                  4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1]
+LETTERS_IN_BAG = [2, 9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4,
+                  2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1]

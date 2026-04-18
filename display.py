@@ -1,4 +1,4 @@
-def print_title():
+def print_title() -> None:
     print(r"""                             __       __       ___                                      __     
                             /\ \     /\ \     /\_ \                                    /\ \    
   ____    ___   _ __    __  \ \ \____\ \ \____\//\ \      __         ___    ___ ___    \_\ \   
@@ -9,7 +9,7 @@ def print_title():
 """)
 
 
-def print_board(board):
+def print_board(board: list[list[str]]) -> None:
     print("      1  2  3  4  5  6  7  8  9  10 11 12 13 14 15")
     print("      |  |  |  |  |  |  |  |  |  |  |  |  |  |  |")
 
@@ -23,14 +23,20 @@ def print_board(board):
         print()
 
 
+def print_game_turn_start(game_turn: int) -> None:
+    print("--------------------------------------------------------")
+    print(f"                    TURN {game_turn}")
+    print("--------------------------------------------------------")
+
+
 # TODO: center text based on player name length
-def print_player_turn_start(player):
+def print_player_turn_start(player: str) -> None:
     print("--------------------------------------------------------")
-    print(f"                    {player.upper()}'S TURN                    ")
+    print(f"                    {player.upper()}'S TURN")
     print("--------------------------------------------------------")
 
 
-def print_player_tiles(tiles, points):
+def print_player_tiles(tiles: list[str], points: int) -> None:
     print("              ", end="")
     for tile in tiles:
         print(tile, end="   ")
