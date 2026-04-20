@@ -10,6 +10,7 @@
 
 - Place word
 - Exchange letters ✅
+- Shuffle letters ✅
 - Pass ✅
 
 - First turn
@@ -17,3 +18,18 @@
 - Following turns
     - must use existing letter
     - word cannot be 1 letter
+
+Placement rules:
+- word must match letters of occupied tiles
+- word must place a new tile
+
+- tile must be empty
+- otherwise, occupied tile letter must be matching the current letter
+- otherwise, word placement not valid
+- use booleans
+  - flag for letter placed on empty tile
+  - flag for letter placed on matching tile
+
+
+Placing word:
+- tile 

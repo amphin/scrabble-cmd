@@ -27,7 +27,8 @@ initial_num_tiles = len(bag)
 max_tiles_per_player = 7
 scores = [0 for n in range(num_players)]
 turn = 0
-game_turn = 0
+round = 1
+occupied_tiles = []
 
 for i in range(max_tiles_per_player):
     for j in range(len(players_tiles)):
@@ -87,40 +88,8 @@ def shuffle_letters() -> None:
         players_tiles[turn], helper.get_tile_points(players_tiles[turn]))
 
 
-def word_placement_prompt() -> tuple[int, int, str]:
-    for i in range(6):
-        sys.stdout.write("\033[F\033[K")
-
-    print("Enter row:")
-    row = helper.int_input_prompt(1, 15)
-
-    sys.stdout.write("\033[F\033[K")
-    sys.stdout.write("\033[F\033[K")
-    sys.stdout.flush()
-
-    print("Enter column:")
-    col = helper.int_input_prompt(1, 15)
-
-    sys.stdout.write("\033[F\033[K")
-    sys.stdout.write("\033[F\033[K")
-    sys.stdout.flush()
-
-    print("Enter direction (horizontal/vertical):")
-    print()
-    while True:
-        sys.stdout.write("\033[F\033[K")
-        sys.stdout.flush()
-
-        direction = input("> ")
-
-        if direction.lower() == "horizontal" or direction.lower() == "vertical":
-            sys.stdout.write("\033[F\033[K")
-            sys.stdout.write("\033[F\033[K")
-            sys.stdout.flush()
-            return row, col, direction
-
-
 def word_prompt(letters: list[str]) -> str:
+    print()
     print("Enter word:")
     print()
     player_word = input("> ")
@@ -144,8 +113,6 @@ def word_prompt(letters: list[str]) -> str:
 
 
 def menu_handler() -> None:
-    global bag
-
     turn_spent = False
 
     while not turn_spent:
@@ -159,10 +126,21 @@ def menu_handler() -> None:
             # else, print placements as numbered list
             # once user picks placement, place word at that position
 
-            # row, col, dir = word_placement_prompt()
-            word = word_prompt(players_tiles[turn])
-            # if helper.can_play_word(word, row, col, dir):
-            #     pass
+            word_placeable = True
+            while word_placeable:
+                word = word_prompt(players_tiles[turn])
+                horizontal_placements, vertical_placements = helper.get_word_placements(
+                    word.upper())
+
+                # TODO: word is invalid message, then show word prompt again (while loop in this if block)
+                if len(horizontal_placements) == 0 and len(vertical_placements) == 0:
+                    sys.stdout.write("\033[F\033[K")
+                else:
+                    word_placeable = False
+
+            # TODO: position selection
+
+            # if user enters . they exit to main menu i.e. continue loop with turn_spent = False
 
         elif choice == "2":
             letters_to_exchange = exchange_letters_prompt(players_tiles[turn])
@@ -174,7 +152,7 @@ def menu_handler() -> None:
                 players_tiles[turn].append(exchanged_tile)
                 bag.remove(exchanged_tile)
 
-            bag += letters_to_exchange
+            bag.extend(letters_to_exchange)
 
             print()
             print("              ------- NEW TILES -------")
@@ -184,13 +162,14 @@ def menu_handler() -> None:
             turn_spent = True
         elif choice == "3":
             shuffle_letters()
+        elif choice == "4":
+            turn_spent = True
 
 
 # game loop
 while len(bag) > 0:
-    game_turn += 1
     print()
-    display.print_game_turn_start(game_turn)
+    display.print_game_turn_start(round)
     display.print_player_turn_start(player_names[turn])
     display.print_board(gp.board)
     print()
@@ -211,4 +190,7 @@ while len(bag) > 0:
     print()
 
     finish_turn = input("Press Enter to finish turn: ")
-    turn = (turn + 1) % num_players
+
+    new_turn = (turn + 1) % num_players
+    round += 1 if new_turn < turn else 0
+    turn = new_turn
