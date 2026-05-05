@@ -1,6 +1,3 @@
-import sys
-from math import inf
-
 import game_pieces as gp
 
 
@@ -14,20 +11,6 @@ def get_tile_points(letters: list[str]) -> list[int]:
         tile_points.append(gp.LETTER_POINTS[tile])
 
     return tile_points
-
-
-def int_input_prompt(min_range: int = -inf, max_range: int = inf) -> int:
-    while True:
-        try:
-            num = int(input("> "))
-            if min_range <= num <= max_range:
-                return num
-            else:
-                sys.stdout.write("\033[F\033[K")
-                sys.stdout.flush()
-        except:
-            sys.stdout.write("\033[F\033[K")
-            sys.stdout.flush()
 
 
 def is_first_word() -> bool:
@@ -52,6 +35,7 @@ def can_place_word(word: str, position: int, row: list[str]) -> bool:
     return not all_empty_tiles
 
 
+# TODO: remove
 def get_word_placements(word: str) -> tuple[list[tuple[int, int]]]:
     horizontal_placements = []
     vertical_placements = []
@@ -68,7 +52,7 @@ def get_word_placements(word: str) -> tuple[list[tuple[int, int]]]:
     return horizontal_placements, vertical_placements
 
 
-def is_word_valid(word: str, letters: list[str]) -> bool:
+def is_word_valid(word: str, letters: list[str]) -> str:
     if len(word) == 1 and is_first_word():
         return "Word cannot be placed legally"
 
